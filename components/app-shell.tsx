@@ -22,7 +22,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
@@ -111,7 +110,9 @@ function RoleSwitcher() {
         <ChevronDown className="size-4 text-muted-foreground" aria-hidden="true" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-60">
-        <DropdownMenuLabel>Masuk sebagai (mode demo)</DropdownMenuLabel>
+        <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+          Masuk sebagai (mode demo)
+        </div>
         <DropdownMenuSeparator />
         {(Object.keys(ROLE_META) as Role[]).map((r) => {
           const m = ROLE_META[r]
