@@ -20,7 +20,7 @@ import { cn } from '@/lib/utils'
 const STATUSES: Status[] = ['baru', 'diproses', 'selesai']
 
 export function LaporanList() {
-  const { reports } = useApp()
+  const { reports, loading } = useApp()
   const searchParams = useSearchParams()
   const initialCat = searchParams.get('kategori') ?? 'all'
 
@@ -47,6 +47,10 @@ export function LaporanList() {
     for (const s of STATUSES) c[s] = reports.filter((r) => r.status === s).length
     return c
   }, [reports])
+
+  if (loading) {
+    return <p className="text-sm text-muted-foreground">Memuat laporan...</p>
+  }
 
   return (
     <div className="flex flex-col gap-5">

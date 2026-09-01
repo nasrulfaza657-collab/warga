@@ -28,7 +28,7 @@ const STATUS_FILTERS: { value: Status | 'all'; label: string }[] = [
 ]
 
 export function PetaView() {
-  const { reports } = useApp()
+  const { reports, loading } = useApp()
   const [statusFilter, setStatusFilter] = useState<Status | 'all'>('all')
   const [categoryFilter, setCategoryFilter] = useState<string>('all')
   const [focus, setFocus] = useState<{ id: string; coord: [number, number] } | null>(
@@ -42,6 +42,10 @@ export function PetaView() {
       return true
     })
   }, [reports, statusFilter, categoryFilter])
+
+  if (loading) {
+    return <p className="text-sm text-muted-foreground">Memuat data peta...</p>
+  }
 
   return (
     <div className="flex flex-col gap-4 lg:h-[calc(100vh-8rem)] lg:flex-row">

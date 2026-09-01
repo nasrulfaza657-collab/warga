@@ -50,27 +50,32 @@ export function BuatLaporanForm() {
     setPreview(URL.createObjectURL(file))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!pelapor.trim() || !judul.trim() || !kategori || !lokasi.trim() || !deskripsi.trim()) {
       toast.error('Mohon lengkapi semua kolom yang wajib diisi.')
       return
     }
     setSubmitting(true)
-    const cat = CATEGORIES.find((c) => c.id === kategori)!
-    const report = addReport({
-      judul: judul.trim(),
-      kategori,
-      deskripsi: deskripsi.trim(),
-      lokasi: lokasi.trim(),
-      prioritas,
-      pelapor: pelapor.trim(),
-      foto: cat.foto,
-      lat: coord[0],
-      lng: coord[1],
-    })
-    toast.success('Laporan berhasil dikirim. Terima kasih atas partisipasinya!')
-    router.push(`/laporan/${report.id}`)
+    try {
+      const cat = CATEGORIES.find((c) => c.id === kategori)!
+      const report = await addReport({
+        judul: judul.trim(),
+        kategori,
+        deskripsi: deskripsi.trim(),
+        lokasi: lokasi.trim(),
+        prioritas,
+        pelapor: pelapor.trim(),
+        foto: cat.foto,
+        lat: coord[0],
+        lng: coord[1],
+      })
+      toast.success('Laporan berhasil dikirim. Terima kasih atas partisipasinya!')
+      router.push(`/laporan/${report.id}`)
+    } catch {
+      toast.error('Gagal mengirim laporan. Silakan coba lagi.')
+      setSubmitting(false)
+    }
   }
 
   return (

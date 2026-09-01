@@ -51,11 +51,17 @@ const TIMELINE_ICON: Record<string, typeof CircleDot> = {
 
 export function ReportDetail() {
   const params = useParams<{ id: string }>()
-  const { reports, role, updateStatus } = useApp()
+  const { reports, role, updateStatus, loading } = useApp()
   const report = reports.find((r) => r.id === params.id)
 
   const [catatan, setCatatan] = useState('')
   const [petugas, setPetugas] = useState('')
+
+  if (loading) {
+    return (
+      <p className="text-sm text-muted-foreground">Memuat detail laporan...</p>
+    )
+  }
 
   if (!report) {
     return (
@@ -70,31 +76,39 @@ export function ReportDetail() {
 
   const cat = CATEGORY_MAP[report.kategori]
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     if (!petugas) {
       toast.error('Pilih petugas lapangan terlebih dahulu.')
       return
     }
-    updateStatus(
-      report.id,
-      'diproses',
-      'Admin Dinas',
-      catatan.trim() || `Ditugaskan ke ${petugas} untuk penanganan.`,
-      petugas,
-    )
-    setCatatan('')
-    toast.success(`Laporan diverifikasi dan ditugaskan ke ${petugas}.`)
+    try {
+      await updateStatus(
+        report.id,
+        'diproses',
+        'Admin Dinas',
+        catatan.trim() || `Ditugaskan ke ${petugas} untuk penanganan.`,
+        petugas,
+      )
+      setCatatan('')
+      toast.success(`Laporan diverifikasi dan ditugaskan ke ${petugas}.`)
+    } catch {
+      toast.error('Gagal memperbarui status. Silakan coba lagi.')
+    }
   }
 
-  const handleComplete = (oleh: string) => {
-    updateStatus(
-      report.id,
-      'selesai',
-      oleh,
-      catatan.trim() || 'Penanganan telah selesai dilakukan.',
-    )
-    setCatatan('')
-    toast.success('Laporan ditandai selesai.')
+  const handleComplete = async (oleh: string) => {
+    try {
+      await updateStatus(
+        report.id,
+        'selesai',
+        oleh,
+        catatan.trim() || 'Penanganan telah selesai dilakukan.',
+      )
+      setCatatan('')
+      toast.success('Laporan ditandai selesai.')
+    } catch {
+      toast.error('Gagal memperbarui status. Silakan coba lagi.')
+    }
   }
 
   const showAdminAction = role === 'admin' && report.status === 'baru'

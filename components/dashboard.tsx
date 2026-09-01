@@ -73,7 +73,7 @@ function KpiCard({
 }
 
 export function Dashboard() {
-  const { reports } = useApp()
+  const { reports, loading } = useApp()
 
   const stats = useMemo(() => {
     const byStatus: Record<Status, number> = { baru: 0, diproses: 0, selesai: 0 }
@@ -129,6 +129,9 @@ export function Dashboard() {
 
   return (
     <div className="flex flex-col gap-6">
+      {loading && (
+        <p className="text-sm text-muted-foreground">Memuat data laporan...</p>
+      )}
       {/* KPI */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <KpiCard label="Total Laporan" value={total} icon={ClipboardList} tint="var(--chart-1)" />
