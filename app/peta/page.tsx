@@ -5,7 +5,7 @@ export default function PetaPage() {
   return (
     <AppShell
       title="Peta Lokasi"
-      subtitle="Sebaran titik laporan fasilitas umum di seluruh wilayah"
+      description="Sebaran titik laporan fasilitas umum di seluruh wilayah"
     >
       <PetaView />
     </AppShell>

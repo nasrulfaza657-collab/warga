@@ -80,7 +80,7 @@ export function PetaView() {
               onClick={() => setCategoryFilter(c.id)}
               className="gap-1.5"
             >
-              <CategoryIcon category={c.id} className="size-3.5" />
+              <CategoryIcon kategori={c.id} className="size-3.5" />
               {c.nama}
             </Button>
           ))}
@@ -109,7 +109,7 @@ export function PetaView() {
                       color: cat?.warna,
                     }}
                   >
-                    <CategoryIcon category={r.kategori} className="size-4" />
+                    <CategoryIcon kategori={r.kategori} className="size-4" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium">{r.judul}</p>
